@@ -25,7 +25,7 @@ jobs:
           file_changed_html=''
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            file_changed_html="${file}</br>"
+            file_changed_html+="${file}</br>"
           done
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
@@ -57,13 +57,13 @@ jobs:
           # Required sender full name (address can be skipped):
           from: ALV GitHub Guardrails
           # Optional plain body:
-          body: |
+          html_body: |
             <b>List of file(s) changed in ${{ env. LISTENING_FOLDER }}</b>
-            <br>
-            ${{ env.FILES_CHANGED_HTML }}
-            <br>
-            <b>Commit Comment</b>
-            <br>
+            ----------------------
+            ${{ steps.changed-files-specific.outputs.all_changed_files}}
+
+            Commit Comment:
+            --------------
             ${{ github.event.head_commit.message }}
 
           #body: echo $changedfiles
