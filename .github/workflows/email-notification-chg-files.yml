@@ -10,7 +10,7 @@ jobs:
           
       # Example 1
       - name: Get changed files
-        id: changed-files
+        id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
             separator: ","
@@ -19,12 +19,14 @@ jobs:
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: List all changed files
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
 
       - name: Send mail
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
           # Specify connection via URL (replaces server_address, server_port, secure,
@@ -45,11 +47,11 @@ jobs:
           # Optional (recommended) mail server password:
           password: ${{secrets.SMTP_PASSWORD}}
           # Required mail subject:
-          subject: ALV API Controllers-GitHub
+          subject: ALV API Controllers-GitHub Updated
           # Required recipients' addresses:
           to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
-          from: kumvijaya@gmail.com
+          from: ALV GitHub Guardrails
           # Optional plain body:
           body: | 
                  Build job of ${{github.repository}} completed successfully!.  
@@ -58,7 +60,7 @@ jobs:
 
                  List of file(s) :-
                  ------------------ 
-                     ${{ steps.changed-files.outputs.all_changed_files }}
+                     ${{ steps.changed-files-specific.outputs.all_changed_files }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
