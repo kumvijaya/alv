@@ -1,6 +1,5 @@
 name: email-notification-changed-folders
 on: push
-# on: workflow_dispatch
 jobs:
   email-notification-for-changed-folders:
     runs-on: ubuntu-latest
@@ -9,7 +8,6 @@ jobs:
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
-
       # Example 1
       - name: Get changed files
         id: changed-files
@@ -26,21 +24,6 @@ jobs:
             echo "$file was changed"
           done
 
-      #- name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
-      #  id: changed-files-specific-source-file-and-specify-files
-      #  uses: tj-actions/changed-files@v37
-      #  with:
-      #      files_from_source_file: |
-      #        test/changed-files-list.txt
-      #      files: |
-      #        test.txt
-
-      #- name: List all added files
-      #  run: |
-      #    for changedfiles in ${{ steps.changed-files.outputs.added_files }}; do
-      #      echo "$changedfiles was added"
-      #    done
-
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
@@ -51,7 +34,6 @@ jobs:
           #
           #  * smtp://user:password@server:port
           #  * smtp+starttls://user:password@server:port
-          #connection_url: ${{secrets.MAIL_CONNECTION}}
           # Required mail server address if not connection_url:
           server_address: smtp.gmail.com
           # Server port, default 25:
@@ -67,7 +49,7 @@ jobs:
           # Required recipients' addresses:
           to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
-          from: ALV # <vijaik.nd@gmail.com>
+          # from: kumvijaya@gmail.com
           # Optional plain body:
           body: | 
                  Build job of ${{github.repository}} completed successfully!.  
@@ -80,7 +62,7 @@ jobs:
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
-          #Vijai html_body: file://README.html
+          #html_body: file://README.html
           # Optional carbon copy recipients:
           #cc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
           # Optional blind carbon copy recipients:
@@ -95,7 +77,7 @@ jobs:
           #convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
-          attachments: test.txt
+          # attachments: test.txt
           # Optional priority: 'high', 'normal' (default) or 'low'
           #priority: low
     
