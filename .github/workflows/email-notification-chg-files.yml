@@ -49,7 +49,7 @@ jobs:
           # Required recipients' addresses:
           to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
-          # from: kumvijaya@gmail.com
+          from: kumvijaya@gmail.com
           # Optional plain body:
           body: | 
                  Build job of ${{github.repository}} completed successfully!.  
