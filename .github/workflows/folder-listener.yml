@@ -14,7 +14,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: ","
+            separator: "\n"
             files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
@@ -54,14 +54,7 @@ jobs:
           # Required sender full name (address can be skipped):
           from: ALV GitHub Guardrails
           # Optional plain body:
-          body: | 
-            **List of file(s) changed in _${{ env. LISTENING_FOLDER }}_:**
-
-            ${{ steps.changed-files-specific.outputs.all_changed_files }}
-
-            **Commit Comment**
-
-            ${{ github.event.head_commit.message }}
+          body: '*List of file(s) changed in ${{ env. LISTENING_FOLDER }}:*\n${{ steps.changed-files-specific.outputs.all_changed_files }}\n*Commit Comment*:\n${{ github.event.head_commit.message }}'
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
@@ -83,5 +76,5 @@ jobs:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
           # attachments: test.txt
           # Optional priority: 'high', 'normal' (default) or 'low'
-          #priority: low
+          priority: high
     
