@@ -16,6 +16,7 @@ jobs:
         uses: tj-actions/changed-files@v37
         with:
             separator: ","
+            files: api/app/controllers
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
