@@ -22,12 +22,12 @@ jobs:
       - name: List all changed files in ${{ env. LISTENING_FOLDER }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          file_changed=''
+          file_changed_html=''
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            file_changed="\n${file}"
+            file_changed_html="${file}</br>"
           done
-          echo "FILES_CHANGED=$file_changed" >> $GITHUB_ENV
+          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -57,7 +57,14 @@ jobs:
           # Required sender full name (address can be skipped):
           from: ALV GitHub Guardrails
           # Optional plain body:
-          body: '*List of file(s) changed in ${{ env. LISTENING_FOLDER }}:*\n${{ env.FILES_CHANGED }}\n*Commit Comment*:\n${{ github.event.head_commit.message }}'
+          body: |
+            <b>List of file(s) changed in ${{ env. LISTENING_FOLDER }}</b>
+            <br>
+            ${{ env.FILES_CHANGED_HTML }}
+            <br>
+            <b>Commit Comment</b>
+            <br>
+            ${{ github.event.head_commit.message }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
@@ -73,8 +80,7 @@ jobs:
           # Optional unsigned/invalid certificates allowance:
           #ignore_cert: true
           # Optional converting Markdown to HTML (set content_type to text/html too):
-          convert_markdown: true
-          content_type: text/html
+          # convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
           # attachments: test.txt
