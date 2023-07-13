@@ -14,7 +14,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: "\n"
+            separator: ","
             files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
@@ -78,6 +78,7 @@ jobs:
           #ignore_cert: true
           # Optional converting Markdown to HTML (set content_type to text/html too):
           convert_markdown: true
+          content_type: text/html
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
           # attachments: test.txt
