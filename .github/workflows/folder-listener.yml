@@ -15,11 +15,11 @@ jobs:
         uses: tj-actions/changed-files@v37
         with:
             # separator: ","
-            files: ${{ env. LISTENING_FOLDER }}
+            files: ${{ env.LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
-      - name: List all changed files in ${{ env. LISTENING_FOLDER }}
+      - name: List all changed files in ${{ env.LISTENING_FOLDER }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           file_changed_html=''
@@ -59,8 +59,7 @@ jobs:
           # Optional plain body:
           html_body: |
             <b>List of files changed in ${{ env.LISTENING_FOLDER }}</b>
-            <br>
-            ${{ steps.changed-files-specific.outputs.all_changed_files }}
+            ${{ env.FILES_CHANGED_HTML }}
             <br>
 
             <b>Commit Comment</b>
