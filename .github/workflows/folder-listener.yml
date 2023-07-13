@@ -58,12 +58,14 @@ jobs:
           from: ALV GitHub Guardrails
           # Optional plain body:
           html_body: |
-            <b>List of file(s) changed in ${{ env. LISTENING_FOLDER }}</b>
-            ----------------------
-            ${{ steps.changed-files-specific.outputs.all_changed_files}}
+            <b>List of file(s) changed in ${{ env.LISTENING_FOLDER }}</b>
+            <hr>
+            <br>
+            ${{ env.FILES_CHANGED_HTML }}
 
-            Commit Comment:
-            --------------
+            <b>Commit Comment</b>
+            <hr>
+            <br>
             ${{ github.event.head_commit.message }}
 
           #body: echo $changedfiles
