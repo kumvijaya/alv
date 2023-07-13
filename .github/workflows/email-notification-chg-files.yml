@@ -58,13 +58,13 @@ jobs:
           # Optional whether this connection use TLS (default is true if server_port is 465)
           secure: true
           # Optional (recommended) mail server username:
-          username: ${{secrets.MAIL_USERNAME}}
+          username: ${{secrets.SMTP_USER}}
           # Optional (recommended) mail server password:
-          password: ${{secrets.MAIL_PASSWORD}}
+          password: ${{secrets.SMTP_PASSWORD}}
           # Required mail subject:
           subject: ALV API Controllers-GitHub fol
           # Required recipients' addresses:
-          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
           from: Vijai Kannan # <vijaik.nd@gmail.com>
           # Optional plain body:
