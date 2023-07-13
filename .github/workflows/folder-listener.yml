@@ -1,31 +1,32 @@
-name: email-notification-changed-folders
+name: Folder Listener
 on: push
 jobs:
-  email-notification-for-changed-folders:
+  folder-listener:
     runs-on: ubuntu-latest
+    env:
+        LISTENING_FOLDER : api/app/controllers
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
-      # Example 1
-      - name: Get changed files
+      - name: Get changed files in ${{ env. LISTENING_FOLDER }}
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: ","
-            files: api/app/controllers
+            separator: "\n"
+            files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
-      - name: List all changed files
+      - name: List all changed files in ${{ env. LISTENING_FOLDER }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
 
-      - name: Send mail
+      - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
@@ -54,13 +55,13 @@ jobs:
           from: ALV GitHub Guardrails
           # Optional plain body:
           body: | 
-                 Build job of ${{github.repository}} completed successfully!.  
+            **List of file(s) changed in _${{ env. LISTENING_FOLDER }}_:**
 
-                 Commit Comments :- ${{ github.event.head_commit.message }}
+            ${{ steps.changed-files-specific.outputs.all_changed_files }}
 
-                 List of file(s) :-
-                 ------------------ 
-                     ${{ steps.changed-files-specific.outputs.all_changed_files }}
+            **Commit Comment**
+
+            ${{ github.event.head_commit.message }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
@@ -76,7 +77,7 @@ jobs:
           # Optional unsigned/invalid certificates allowance:
           #ignore_cert: true
           # Optional converting Markdown to HTML (set content_type to text/html too):
-          #convert_markdown: true
+          convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
           # attachments: test.txt
