@@ -2,8 +2,14 @@ name: Folder Listener
 on:
   push:
     branches:
-      - main         #to be changed to master
+      # - main         #to be changed to master
       - feature/initial
+
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
 jobs:
   folder-listener:
     runs-on: ubuntu-latest
@@ -19,6 +25,7 @@ jobs:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
       - name: Get changed files in ${{ env. LISTENING_FOLDER }}
+        if: github.event.pull_request.merged == true
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
@@ -27,7 +34,7 @@ jobs:
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: List all changed files in ${{ env.LISTENING_FOLDER }}
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: steps.changed-files-specific.outputs.any_changed == 'true' && github.event.pull_request.merged == true
         run: |
           file_changed_html='<ul>'
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
@@ -38,7 +45,7 @@ jobs:
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
       - name: Send email
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: steps.changed-files-specific.outputs.any_changed == 'true' && github.event.pull_request.merged == true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
