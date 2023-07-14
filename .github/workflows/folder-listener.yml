@@ -1,10 +1,17 @@
 name: Folder Listener
-on: push
+on:
+  push:
+    branches:
+      - main         #to be changed to master
+      - feature/initial
 jobs:
   folder-listener:
     runs-on: ubuntu-latest
     env:
         LISTENING_FOLDER : api/app/controllers
+        NOTIFICATION_FROM: ALVDIGITAL Systems (API)
+        NOTIFICATION_SUBJECT: ALV API Controllers-GitHub Updated
+        NOTIFICATION_EMAIL_IDS: vijaik.nd@gmail.com,vishali.nagathevan@gmail.com,kumvijaya@gmail.com,alagu.rar@gmail.com
     steps:
       - uses: actions/checkout@v3
         with:
@@ -22,25 +29,18 @@ jobs:
       - name: List all changed files in ${{ env.LISTENING_FOLDER }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          file_changed_html=''
+          file_changed_html='<ul>'
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            file_changed_html="${file_changed_html}<br>${file}"
+            file_changed_html="${file_changed_html}<li>${file}</li>"
           done
+          file_changed_html="${file_changed_html}</ul>"
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
-          # Specify connection via URL (replaces server_address, server_port, secure,
-          # username and password)
-          #
-          # Format:
-          #
-          #  * smtp://user:password@server:port
-          #  * smtp+starttls://user:password@server:port
-          # Required mail server address if not connection_url:
           server_address: smtp.gmail.com
           # Server port, default 25:
           server_port: 465
@@ -51,39 +51,25 @@ jobs:
           # Optional (recommended) mail server password:
           password: ${{secrets.SMTP_PASSWORD}}
           # Required mail subject:
-          subject: ALV API Controllers-GitHub Updated
+          subject: ${{ env.NOTIFICATION_SUBJECT }}
           # Required recipients' addresses:
-          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
+          bcc: ${{ env.NOTIFICATION_EMAIL_IDS }}
           # Required sender full name (address can be skipped):
-          from: ALV GitHub Guardrails
+          from: ${{ env.NOTIFICATION_FROM }}
           # Optional plain body:
           html_body: |
-            <b>List of files changed in ${{ env.LISTENING_FOLDER }}</b>
+            <b>Files changed: ${{ steps.changed-files-specific.outputs.all_changed_files_count }}</b>
+            <hr>
             ${{ env.FILES_CHANGED_HTML }}
             <br>
-
             <b>Commit Comment</b>
-            <br>
+            <hr>
+            <pre>
             ${{ github.event.head_commit.message }}
 
-          #body: echo $changedfiles
-          # Optional HTML body read from file:
-          #html_body: file://README.html
-          # Optional carbon copy recipients:
-          #cc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
-          # Optional blind carbon copy recipients:
-          #bcc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
-          # Optional recipient of the email response:
-          #reply_to: vijaik.nd@gmail.com
-          # Optional Message ID this message is replying to:
-          #in_reply_to: <vijaik.nd@gmail.com>
-          # Optional unsigned/invalid certificates allowance:
-          #ignore_cert: true
-          # Optional converting Markdown to HTML (set content_type to text/html too):
-          # convert_markdown: true
-          # Optional attachments:
-          #attachments: attachments.zip,git.diff,./dist/static/*.js
-          # attachments: test.txt
-          # Optional priority: 'high', 'normal' (default) or 'low'
+
+            <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
+            </pre>
+
           priority: high
     
