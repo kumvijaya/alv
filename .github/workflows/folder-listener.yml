@@ -11,6 +11,7 @@ jobs:
         LISTENING_FOLDER : api/app/controllers
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
         NOTIFICATION_SUBJECT: ALV API Controllers-GitHub Updated
+        NOTIFICATION_TO_DEFAULT: kumvijaya@gmail.com # service@alvdigital.com
         NOTIFICATION_EMAIL_IDS: vijaik.nd@gmail.com,vishali.nagathevan@gmail.com,kumvijaya@gmail.com,alagu.rar@gmail.com
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +22,6 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            # separator: ","
             files: ${{ env.LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
@@ -52,7 +52,9 @@ jobs:
           password: ${{secrets.SMTP_PASSWORD}}
           # Required mail subject:
           subject: ${{ env.NOTIFICATION_SUBJECT }}
-          # Required recipients' addresses:
+          # Required recipients addresses:
+          to: ${{ env.NOTIFICATION_TO_DEFAULT }}
+          # Optional recipients addresses:
           bcc: ${{ env.NOTIFICATION_EMAIL_IDS }}
           # Required sender full name (address can be skipped):
           from: ${{ env.NOTIFICATION_FROM }}
