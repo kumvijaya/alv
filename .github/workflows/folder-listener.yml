@@ -2,13 +2,13 @@ name: Folder Listener
 on:
   push:
     branches:
-      # - main         #to be changed to master
+      - main         #to be changed to master
       - feature/initial
 
-  pull_request:
-    branches:
-      - main
-    types: [ closed ]
+  # pull_request:
+  #   branches:
+  #     - main
+  #   types: [ closed ]
 
 jobs:
   folder-listener:
@@ -22,8 +22,8 @@ jobs:
         NOTIFICATION_EMAIL_IDS: vijaik.nd@gmail.com,vishali.nagathevan@gmail.com,kumvijaya@gmail.com,alagu.rar@gmail.com
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+        # with:
+        #   fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
       - name: Get changed files in ${{ env. LISTENING_FOLDER }}
         id: changed-files-specific
@@ -43,6 +43,21 @@ jobs:
           done
           file_changed_html="${file_changed_html}</ul>"
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
+
+      - name: Create Changelog
+        id: changelog
+        uses: actions/github-script@v6.3.1
+        env:
+          COMMITS: ${{ toJSON(github.event.commits) }}
+        with:
+          result-encoding: string
+          script: |
+              const commits = JSON.parse(process.env.COMMITS);
+              var lines = "## What’s Changed\n\n";
+              for (const commit of commits) {
+                lines += "- " + commit.message + " (" + commit.id + ") @" + commit.author.username + "\n"
+              }
+              return lines
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -74,9 +89,7 @@ jobs:
             <b>Commit Comment</b>
             <hr>
             <pre>
-
-            ${{ github.event.pull_request.commits }}
-
+            ${{ steps.changelog.outputs.result }}
 
             <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
             </pre>
