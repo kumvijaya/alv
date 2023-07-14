@@ -12,7 +12,6 @@ on:
 
 jobs:
   folder-listener:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
         LISTENING_FOLDER : api/app/controllers
