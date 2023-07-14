@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
         LISTENING_FOLDER : api/app/controllers
+        NOTIFICATION_SMTP_USER: ${{secrets.SMTP_USER}}
+        NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
         NOTIFICATION_SUBJECT: ALV API Controllers-GitHub Updated
         NOTIFICATION_TO_DEFAULT: kumvijaya@gmail.com # service@alvdigital.com
@@ -24,35 +26,17 @@ jobs:
             files: ${{ env.LISTENING_FOLDER }}
 
       - name: List all changed files in ${{ env.LISTENING_FOLDER }}
+        id: change-info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          file_changed_html='<ol type="1">'
+          files_changed_html='<ol type="1">'
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
             commit_info=$(git log -1 --oneline ${file})
-            file_changed_html="${file_changed_html}<li>${file}<br>Commit: ${commit_info}</li>"
+            files_changed_html="${files_changed_html}<li>${file}<br><i>Commit</i>: ${commit_info}</li>"
           done
-          file_changed_html="${file_changed_html}</ol>"
-          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
-
-      - name: Create changelog
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        id: changelog_html
-        uses: actions/github-script@v6.3.1
-        env:
-          COMMITS: ${{ toJSON(github.event.commits) }}
-        with:
-          result-encoding: string
-          script: |
-              const commits = JSON.parse(process.env.COMMITS);
-              var lines = "<ul>";
-              for (const commit of commits) {
-                if(!commit.message.startsWith('Merge pull request')) {
-                  lines += "<li>" + commit.message + " (" + commit.id + ") @" + commit.author.username + "</li>"
-                }
-              }
-              lines += '</ul>'
-              return lines
+          files_changed_html="${files_changed_html}</ol>"
+          echo "files_changed_html=$files_changed_html" >> $GITHUB_OUTPUT
 
       - name: Send notification
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -64,9 +48,9 @@ jobs:
           # Optional whether this connection use TLS (default is true if server_port is 465)
           secure: true
           # Optional (recommended) mail server username:
-          username: ${{secrets.SMTP_USER}}
+          username: ${{env.NOTIFICATION_SMTP_USER}}
           # Optional (recommended) mail server password:
-          password: ${{secrets.SMTP_PASSWORD}}
+          password: ${{env.NOTIFICATION_SMTP_PASSWORD}}
           # Required mail subject:
           subject: ${{ env.NOTIFICATION_SUBJECT }}
           # Required recipients addresses:
@@ -79,7 +63,7 @@ jobs:
           html_body: |
             <b>Files changed: ${{ steps.changed-files-specific.outputs.all_changed_files_count }}</b>
             <hr>
-            ${{ env.FILES_CHANGED_HTML }}
+            ${{ steps.change-info.outputs.files_changed_html }}
             <br>
             <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
           # Optional priority: 'high', 'normal' (default) or 'low'
