@@ -65,7 +65,7 @@ jobs:
             <hr>
             ${{ steps.change-info.outputs.files_changed_html }}
             <br>
-            <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
+            This is an automated email. If you have questions about the above, please email to service@alvdigital.com
           # Optional priority: 'high', 'normal' (default) or 'low'
           priority: high
           # Optional HTML body read from file:
