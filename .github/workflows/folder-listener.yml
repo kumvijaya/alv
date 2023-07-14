@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main         #to be changed to master
-      - feature/initial
+      - feature/test
 
   # pull_request:
   #   branches:
@@ -88,7 +88,7 @@ jobs:
             <hr>
             ${{ env.FILES_CHANGED_HTML }}
             <br>
-            <b>Commit Comment</b>
+            <b>Commit Comment(s)</b>
             <hr>
             <pre>
             ${{ steps.changelog_html.outputs.result }}
