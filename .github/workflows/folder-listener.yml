@@ -44,7 +44,7 @@ jobs:
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
       - name: Create Changelog
-        id: changelog
+        id: changelog_html
         uses: actions/github-script@v6.3.1
         env:
           COMMITS: ${{ toJSON(github.event.commits) }}
@@ -52,10 +52,13 @@ jobs:
           result-encoding: string
           script: |
               const commits = JSON.parse(process.env.COMMITS);
-              var lines = "## What’s Changed\n\n";
+              var lines = "<ul>";
               for (const commit of commits) {
-                lines += "- " + commit.message + " (" + commit.id + ") @" + commit.author.username + "\n"
+                if(!commit.message.startsWith('Merge pull request')) {
+                  lines += "<li>" + commit.message + " (" + commit.id + ") @" + commit.author.username + "</li>"
+                }
               }
+              lines += '</ul>'
               return lines
 
       - name: Send email
@@ -88,7 +91,7 @@ jobs:
             <b>Commit Comment</b>
             <hr>
             <pre>
-            ${{ steps.changelog.outputs.result }}
+            ${{ steps.changelog_html.outputs.result }}
 
             <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
             </pre>
