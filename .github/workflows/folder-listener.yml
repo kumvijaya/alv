@@ -13,7 +13,7 @@ jobs:
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
         NOTIFICATION_SUBJECT: ALV API Controllers-GitHub Updated
         NOTIFICATION_TO_DEFAULT: kumvijaya@gmail.com # service@alvdigital.com
-        NOTIFICATION_EMAIL_IDS: service@alvdigital.com,kumvijaya@gmail.com
+        NOTIFICATION_EMAIL_RECIPIENTS: service@alvdigital.com,kumvijaya@gmail.com
     steps:
       - uses: actions/checkout@v3
           
@@ -71,7 +71,7 @@ jobs:
           # Required recipients addresses:
           to: ${{ env.NOTIFICATION_TO_DEFAULT }}
           # Optional blind carbon copy recipients:
-          bcc: ${{ env.NOTIFICATION_EMAIL_IDS }}
+          bcc: ${{ env.NOTIFICATION_EMAIL_RECIPIENTS }}
           # Required sender full name (address can be skipped):
           from: ${{ env.NOTIFICATION_FROM }}
           # Optional plain body:
