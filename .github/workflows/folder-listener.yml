@@ -35,12 +35,12 @@ jobs:
       - name: List all changed files in ${{ env.LISTENING_FOLDER }}
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          file_changed_html='<ul>'
+          file_changed_html='<ol type="1">'
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
             file_changed_html="${file_changed_html}<li>${file}</li>"
           done
-          file_changed_html="${file_changed_html}</ul>"
+          file_changed_html="${file_changed_html}</ol>"
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
       - name: Create Changelog
