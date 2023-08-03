@@ -2,8 +2,7 @@ name: Folder Listener
 on:
   push:
     branches:
-      - main          # Can be changed to master
-      - feature/test  # Can be changed to your feature branch for tests
+      - master
 
 jobs:
   folder-listener:
@@ -13,8 +12,8 @@ jobs:
         NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
         NOTIFICATION_SUBJECT: ALV API Controllers-GitHub Updated
-        NOTIFICATION_TO_DEFAULT: kumvijaya@gmail.com # service@alvdigital.com
-        NOTIFICATION_EMAIL_RECIPIENTS: service@alvdigital.com,kumvijaya@gmail.com
+        NOTIFICATION_TO_DEFAULT: info@alvdigital.com
+        NOTIFICATION_EMAIL_RECIPIENTS: patrick.thomas@alvdigital.com,goran.pesic@alvdigital.com,andre@kicktheflame.com
     steps:
       - uses: actions/checkout@v3
           
@@ -24,7 +23,7 @@ jobs:
         with:
             files: | 
               api/app/controllers
-              api/app/models/model1.txt
+              api/app/models
 
       - name: List all changed files
         id: change-info
