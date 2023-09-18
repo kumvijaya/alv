@@ -34,7 +34,7 @@ jobs:
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
             commit_info=$(git log -1 --pretty=%B ${file})
-            files_changed_html="${files_changed_html}<b>${file}</b><br><i>Commit</i>: ${commit_info}<br><br>"
+            files_changed_html="""${files_changed_html}<b>${file}</b><br><i>Commit</i>: ${commit_info}<br><br>"""
           done
           echo "files_changed_html=$files_changed_html" >> $GITHUB_OUTPUT
 
