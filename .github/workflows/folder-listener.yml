@@ -30,13 +30,12 @@ jobs:
         id: change-info
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          files_changed_html='<ol type="1">'
+          files_changed_html=''
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            commit_info=$(git log -1 --pretty=%B ${file})
-            files_changed_html="${files_changed_html}<li>${file}<br><i>Commit</i>: ${commit_info}</li>"
+            commit_info=$(git log -1 --oneline ${file})
+            files_changed_html="${files_changed_html}<br>${file}<br><i>Commit</i>: ${commit_info}"
           done
-          files_changed_html="${files_changed_html}</ol>"
           echo "files_changed_html=$files_changed_html" >> $GITHUB_OUTPUT
 
       - name: Send notification
