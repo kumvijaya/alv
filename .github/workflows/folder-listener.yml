@@ -35,7 +35,7 @@ jobs:
             echo "$file was changed"
             commit_id=$(git log --format="%H" -n 1 ${file})
             commit_comment=$(git log -1 --pretty=%B ${file})
-            commit_comment=${commit_comment//$'\n'/<br />}")
+            commit_comment=$(echo "${commit_comment//$'\n'/<br />}")
             files_changed_html="${files_changed_html}<b>${file}</b><br><i>Commit</i>: ${commit_id}<br>${commit_comment}<br><br>"
           done
           echo "files_changed_html=$files_changed_html" >> $GITHUB_OUTPUT
