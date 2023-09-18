@@ -1,3 +1,3 @@
 import json
 
-print("Temp - Updated 79")
+print("Temp - Updated 70")
