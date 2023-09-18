@@ -33,7 +33,7 @@ jobs:
           files_changed_html='<ol type="1">'
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            commit_info=$(git log -1 --oneline ${file})
+            commit_info=$(git log -1 --pretty=%B ${file})
             files_changed_html="${files_changed_html}<li>${file}<br><i>Commit</i>: ${commit_info}</li>"
           done
           files_changed_html="${files_changed_html}</ol>"
