@@ -1,0 +1,96 @@
+name: Notify Prod Deployment
+on:
+  push:
+    branches:
+      - main          # Can be changed to master
+      - feature/test
+
+jobs:
+  notify-prod-deploy:
+    runs-on: ubuntu-latest
+    env:
+        NOTIFICATION_SMTP_USER: ${{secrets.SMTP_USER}}
+        NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
+        NOTIFICATION_FROM: ALVDIGITAL Systems (API)
+        NOTIFICATION_SUBJECT: Production Deployment Modification
+        # NOTIFICATION_BCC_RECIPIENTS: service@alvdigital.com,kumvijaya@gmail.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      
+      - name: Get author
+        id: author
+        run: |
+
+          author_name=$(git log -n 1 --pretty=format:%an)
+          author_email=$(git log -n 1 --pretty=format:%ae)
+
+          echo "name=$author_name" >> $GITHUB_OUTPUT
+          echo "email=$author_email" >> $GITHUB_OUTPUT
+
+      - name: Send notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended) mail server username:
+          username: ${{env.NOTIFICATION_SMTP_USER}}
+          # Optional (recommended) mail server password:
+          password: ${{env.NOTIFICATION_SMTP_PASSWORD}}
+          # Required mail subject:
+          subject: ${{ env.NOTIFICATION_SUBJECT }}
+          # Required recipients addresses:
+          to: ${{ steps.author.outputs.email }} 
+          # Optional blind carbon copy recipients:
+          #bcc: ${{ env.NOTIFICATION_BCC_RECIPIENTS }}
+          # Required sender full name (address can be skipped):
+          from: ${{ env.NOTIFICATION_FROM }}
+          # Optional plain body:
+          html_body: |
+            <p>
+            Hi <b>${{ steps.author.outputs.name }}</b> <br><br>  
+           
+            You committed to master. <br><br>
+            
+            Do not forget to: <br>
+            <ul>
+              <li> Inform your colleagues in the Skype "<b>New on Live</b>" group </li> 
+              <li> Create a Help Center ticket in <b><i>Jira</i></b> (usually required) </li> 
+              <li> Create a GI ticket in <b><i>Jira</i></b> (usually required) </li> <br>
+            </ul>
+            
+            To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
+            "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below: <br><br>
+                        
+            <body>
+               <p>Sample Image</p>
+               <img src=".github\workflows\help-center.jpg" alt="Help Center Image" width="60" height="40">
+            </body>
+
+            HELP CENTER IMAGE ... TBD <br><br>
+
+            Please do this now! <p>
+            
+
+          # Optional priority: 'high', 'normal' (default) or 'low'
+          priority: high
+          # Optional HTML body read from file:
+          #html_body: file://README.html
+          # Optional carbon copy recipients:
+          #cc: service@alvdigital.com,kumvijaya@gmail.com
+          # Optional recipient of the email response:
+          #reply_to: service@alvdigital.com,kumvijaya@gmail.com
+          # Optional Message ID this message is replying to:
+          #in_reply_to: service@alvdigital.com,kumvijaya@gmail.com
+          # Optional unsigned/invalid certificates allowance:
+          #ignore_cert: true
+          # Optional converting Markdown to HTML (set content_type to text/html too):
+          # convert_markdown: true
+          # Optional attachments:
+          #attachments: attachments.zip,git.diff,./dist/static/*.js
