@@ -2,8 +2,8 @@ name: Notify Prod Deployment
 on:
   push:
     branches:
-      - main          # Can be changed to master
-      - feature/test
+      - master
+      - main
 
 jobs:
   notify-prod-deploy:
