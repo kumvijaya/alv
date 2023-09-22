@@ -11,7 +11,7 @@ jobs:
         NOTIFICATION_SMTP_USER: ${{secrets.SMTP_USER}}
         NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
-        NOTIFICATION_SUBJECT: Production Deployment Modification
+        NOTIFICATION_SUBJECT: Prod Deployment Notification
         NOTIFICATION_IMAGES_PATH: alv/blob/master/.github/workflows
         NOTIFICATION_BCC_RECIPIENTS: kumvijaya@gmail.com
 
