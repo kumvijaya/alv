@@ -35,7 +35,7 @@ jobs:
           image_path="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH"
           echo "path=$image_path" >> $GITHUB_OUTPUT
 
-      - name: Send notification
+      - name: Send Notification
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
