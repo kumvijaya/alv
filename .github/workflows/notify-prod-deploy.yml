@@ -65,15 +65,8 @@ jobs:
             </ul>
             
             To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
-            "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below: <br><br>
-                        
-            <body>
-               <p>Sample Image</p>
-               <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/help-center.jpg?raw=true" alt="Help Center Image" width="60" height="40">
-            </body>
-
-            HELP CENTER IMAGE ... TBD <br><br>
-
+            "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below: <br>
+            <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/create-tickets.png?raw=true" alt="Help Center Image" width="60" height="40">
             Please do this now! <p>
             
 
