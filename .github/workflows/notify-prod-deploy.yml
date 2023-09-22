@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - master
-      - main
-      - feature/test
-
+      
 jobs:
   notify-prod-deploy:
     runs-on: ubuntu-latest
