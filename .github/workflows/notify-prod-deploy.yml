@@ -52,10 +52,9 @@ jobs:
           from: ${{ env.NOTIFICATION_FROM }}
           # Optional plain body:
           html_body: |
-            <p>
-            Hi <b>${{ steps.author.outputs.name }}</b> <br><br>  
+            Hi <b>${{ steps.author.outputs.name }}</b>, <br>
            
-            You committed to master. <br><br>
+            You committed to master. <br>
             
             Do not forget to: <br>
             <ul>
@@ -66,9 +65,10 @@ jobs:
             
             To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
             "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below: <br>
-            <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/create-tickets.png?raw=true" alt="Help Center Image" width="60" height="40">
-            Please do this now! <p>
-            
+            <div style="width: 1000px; height: 600px;">
+              <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/create-tickets.png?raw=true" alt="Help Center Image" width="50%" height="50%">
+            </div>
+            Please do this now!            
 
           # Optional priority: 'high', 'normal' (default) or 'low'
           priority: high
