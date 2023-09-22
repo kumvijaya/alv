@@ -29,6 +29,11 @@ jobs:
           echo "name=$author_name" >> $GITHUB_OUTPUT
           echo "email=$author_email" >> $GITHUB_OUTPUT
 
+      - name: Get Branch
+        id: branch
+        run: |
+          echo "name=$GITHUB_REF" >> $GITHUB_OUTPUT
+
       - name: Get Image Path
         id: image
         run: |
@@ -41,7 +46,7 @@ jobs:
           server_address: smtp.gmail.com
           # Server port, default 25:
           server_port: 465
-          # Optional whether this connection use TLS (default is true if server_port is 465)
+          # Optional whether this connection uses TLS (default is true if server_port is 465)
           secure: true
           # Optional (recommended) mail server username:
           username: ${{env.NOTIFICATION_SMTP_USER}}
@@ -49,7 +54,7 @@ jobs:
           password: ${{env.NOTIFICATION_SMTP_PASSWORD}}
           # Required mail subject:
           subject: ${{ env.NOTIFICATION_SUBJECT }}
-          # Required recipients addresses:
+          # Required recipient's addresses:
           to: ${{ steps.author.outputs.email }} 
           # Optional blind carbon copy recipients:
           bcc: ${{ env.NOTIFICATION_BCC_RECIPIENTS }}
@@ -58,7 +63,7 @@ jobs:
           # Optional plain body:
           html_body: |
             Hi <b>${{ steps.author.outputs.name }}</b>, <br>
-            You committed to ${{ env.GITHUB_REF }}. <br>
+            You committed to ${{ steps.branch.outputs.name }}. <br>
             Do not forget to:
             <ul>
               <li> Inform your colleagues in the Skype "<b>New on Live</b>" group </li> 
@@ -72,7 +77,7 @@ jobs:
             </div>
             Please do this now!            
 
-          # Optional priority: 'high', 'normal' (default) or 'low'
+          # Optional priority: 'high', 'normal' (default), or 'low'
           priority: high
           # Optional HTML body read from file:
           #html_body: file://README.html
