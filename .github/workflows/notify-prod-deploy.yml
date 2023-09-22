@@ -14,6 +14,7 @@ jobs:
         NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
         NOTIFICATION_FROM: ALVDIGITAL Systems (API)
         NOTIFICATION_SUBJECT: Production Deployment Modification
+        NOTIFICATION_TICKET_CREATION_IMAGE_URL: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY_OWNER }}/folder-listener/blob/master/.github/workflows/create-tickets.png?raw=true
         # NOTIFICATION_BCC_RECIPIENTS: service@alvdigital.com,kumvijaya@gmail.com
 
     steps:
@@ -63,7 +64,7 @@ jobs:
             To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
             "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below:
             <div style="width: 1000px; height: 500px;">
-              <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/create-tickets.png?raw=true" alt="Help Center Image" width="100%" height="100%">
+              <img src="${{ env.NOTIFICATION_TICKET_CREATION_IMAGE_URL }}" alt="Help Center Image" width="100%" height="100%">
             </div>
             Please do this now!            
 
