@@ -33,7 +33,7 @@ jobs:
 
       - name: debug
         run: |
-          echo '$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH/create-tickets.png?raw=true'
+          echo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH/create-tickets.png?raw=true"
 
       - name: Send notification
         uses: dawidd6/action-send-mail@v3
