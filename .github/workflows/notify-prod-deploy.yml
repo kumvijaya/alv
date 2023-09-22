@@ -53,19 +53,16 @@ jobs:
           # Optional plain body:
           html_body: |
             Hi <b>${{ steps.author.outputs.name }}</b>, <br>
-           
             You committed to master. <br>
-            
-            Do not forget to: <br>
+            Do not forget to:
             <ul>
               <li> Inform your colleagues in the Skype "<b>New on Live</b>" group </li> 
               <li> Create a Help Center ticket in <b><i>Jira</i></b> (usually required) </li> 
-              <li> Create a GI ticket in <b><i>Jira</i></b> (usually required) </li> <br>
+              <li> Create a GI ticket in <b><i>Jira</i></b> (usually required) </li>
             </ul>
-            
             To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
-            "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below: <br>
-            <div style="width: 800px; height: 400px;">
+            "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below:
+            <div style="width: 1000px; height: 500px;">
               <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/create-tickets.png?raw=true" alt="Help Center Image" width="100%" height="100%">
             </div>
             Please do this now!            
