@@ -68,7 +68,7 @@ jobs:
                         
             <body>
                <p>Sample Image</p>
-               <img src=".github\workflows\help-center.jpg" alt="Help Center Image" width="60" height="40">
+               <img src="https://github.com/kumvijaya/folder-listener/blob/feature/test/.github/workflows/help-center.jpg?raw=true" alt="Help Center Image" width="60" height="40">
             </body>
 
             HELP CENTER IMAGE ... TBD <br><br>
