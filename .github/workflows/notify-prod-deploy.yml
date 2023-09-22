@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 2
       
-      - name: Get author
+      - name: Get Author
         id: author
         run: |
           author_name=$(git log -n 1 --pretty=format:%an)
@@ -31,9 +31,11 @@ jobs:
           echo "name=$author_name" >> $GITHUB_OUTPUT
           echo "email=$author_email" >> $GITHUB_OUTPUT
 
-      - name: debug
+      - name: Get Image Path
+        id: image
         run: |
-          echo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH/create-tickets.png?raw=true"
+          image_path="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH"
+          echo "path=$image_path" >> $GITHUB_OUTPUT
 
       - name: Send notification
         uses: dawidd6/action-send-mail@v3
@@ -67,8 +69,8 @@ jobs:
             </ul>
             To create tickets in <b><i>Jira</i></b>, from within the <b>ALVCODE</b> project, please use the Automation Action on the right             
             "<u><b>Create Help Center</b></u> / <u><b>GI tickets</b></u>" as shown below:
-            <div style="width: 1000px; height: 500px;">
-              <img src="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH/create-tickets.png?raw=true" alt="Help Center Image" width="100%" height="100%">
+            <div>
+              <img src="${{ steps.image.outputs.path }}/create-tickets.png?raw=true" alt="Create Tickets" width="100%" height="100%">
             </div>
             Please do this now!            
 
