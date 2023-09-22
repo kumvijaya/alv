@@ -58,7 +58,7 @@ jobs:
           # Optional plain body:
           html_body: |
             Hi <b>${{ steps.author.outputs.name }}</b>, <br>
-            You committed to master. <br>
+            You committed to ${{ env.GITHUB_REF }}. <br>
             Do not forget to:
             <ul>
               <li> Inform your colleagues in the Skype "<b>New on Live</b>" group </li> 
