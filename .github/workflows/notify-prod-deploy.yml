@@ -12,7 +12,6 @@ jobs:
         NOTIFICATION_SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
         NOTIFICATION_FROM: ALVDIGITAL Systems
         NOTIFICATION_SUBJECT: Prod Deployment Notification
-        NOTIFICATION_IMAGES_PATH: alv/blob/master/.github/workflows
 
     steps:
       - name: Checkout
@@ -32,12 +31,6 @@ jobs:
         id: extract_branch
         run: |
           echo "name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-
-      - name: Get Image Path
-        id: extract_image_path
-        run: |
-          image_path="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY_OWNER/$NOTIFICATION_IMAGES_PATH"
-          echo "path=$image_path" >> $GITHUB_OUTPUT
 
       - name: Send Notification
         uses: dawidd6/action-send-mail@v3
